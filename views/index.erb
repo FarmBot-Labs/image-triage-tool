@@ -1,0 +1,41 @@
+<style>
+  img {
+  	cursor: pointer;
+    padding: 0;
+    margin: 0;
+  }
+  
+  input[type="submit"] {
+    width: 100%;
+    height: 100px;
+  }
+</style>
+<script>
+  function toggle(id) {
+    const el = document.getElementById(id)
+    if (el.value === "KEEP") {
+      document.getElementById(`${id}-img`).style = "filter: brightness(10%)"
+      el.value = "DISCARD"
+      console.log(`Discard ${id}`)
+    } else {
+      document.getElementById(`${id}-img`).style = ""
+      el.value = "KEEP"
+      console.log(`Keep ${id}`)
+    }
+  }
+</script>
+<form>
+  <% if @images.any? %>
+    <p>Click images that you wish to <b>reject</b>.</p>
+  <% else %>
+    <p>No images found in "images_in/" directory.</p>
+  <% end %>
+  <% @images.each do |fpath| %>
+    <label for="<%= fpath %>" onclick="toggle('<%= fpath %>')">
+    <img width="150" height="150" src="<%= fpath %>" id="<%= fpath %>-img"/>
+    <input type="hidden" id="<%= fpath %>" name="<%= fpath %>" value="KEEP"/>
+  </label>
+<% end %>
+<br/>
+<input type="submit" width=1000 height=400/>
+</form>
